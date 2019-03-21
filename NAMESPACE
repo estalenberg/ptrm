@@ -2,6 +2,9 @@
 
 export(cat_function)
 export(cif_fun)
+export(iab_fun)
 export(netcapex_fun)
 export(rdebt_fun)
+export(realcapex_fun)
 export(warl_fun)
+export(yoycapex_fun)
