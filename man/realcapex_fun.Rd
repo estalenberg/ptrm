@@ -4,10 +4,10 @@
 \alias{realcapex_fun}
 \title{Real net capex function}
 \usage{
-realcapex_fun(years, noassets, fcnetavg.full, rvanilla, yearslabel)
+realcapex_fun(noyears, noassets, fcnetavg.full, rvanilla, yearslabel)
 }
 \arguments{
-\item{years}{number of all years from 1}
+\item{noyears}{count of number of projected years}
 
 \item{noassets}{count of asset classes}
 
@@ -26,13 +26,6 @@ Sum of the half vanilla WACC of the netcapex of all assets in each year
 
 Prerequisites that need to be defined in ptrm model (i.e. run above code):
 fcnetavg.full: all years netcapex dataframe, years, noassets, fcnetavg.full, rvanilla, yearslabel
-}
-\examples{
-projyearend = 97
-startyearend = 19
-years = seq(1:(projyearend-startyearend))
-noassets = 22
-
 }
 \keyword{WACC}
 \keyword{asset}

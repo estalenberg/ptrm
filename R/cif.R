@@ -24,8 +24,7 @@ cif_fun=function(y, infl, startyearend, projyearend)
   if(length(y)<2){y=1}else{
     for(i in 2:length(y))
       y[i]=(y[i-1]*(1+infl))}
-  y=y[2:length(y)] #get rid of 2019
-  label=(startyearend+1):projyearend
+  label=(startyearend:projyearend)
   df=as.data.frame(matrix(NA,ncol=length(label),nrow=1))
   names(df)=label
   df[1,]=y

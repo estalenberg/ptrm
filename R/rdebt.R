@@ -12,18 +12,10 @@
 #' @param debtstart defined above from dnsp other.df dataframe
 #' @param debtreduce defined above from dnsp other.df dataframe
 #' @param debtfinal defined above from dnsp other.df dataframe
-#' @param startyearend always 2019 or 19
+#' @param startyearend either 2019 or 2020 depending on dnsp
 #' @param projyearend dynamic input to define the end year of the modelling
 #' @keywords debt, rate, return on debt
 #' @export
-#' @examples
-#' projyearend = 97
-#' startyearend = 19
-#' noyears = projyearend-startyearend
-#' debtstart=0.057231
-#' debtreduce=0.00205
-#' debtfinal=0.049038
-#' years=1:noyears
 #'
 #'
 rdebt_fun=function(y,debtstart,debtfinal,debtreduce,startyearend,projyearend)

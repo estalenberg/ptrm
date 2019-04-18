@@ -15,7 +15,7 @@ rdebt_fun(y, debtstart, debtfinal, debtreduce, startyearend, projyearend)
 
 \item{debtreduce}{defined above from dnsp other.df dataframe}
 
-\item{startyearend}{always 2019 or 19}
+\item{startyearend}{either 2019 or 2020 depending on dnsp}
 
 \item{projyearend}{dynamic input to define the end year of the modelling}
 }
@@ -28,17 +28,6 @@ rate of debt is capped at the fifth year (2024) and then made into a dataframe w
 
 Prerequisites that need to be defined in ptrm model (i.e. run above code):
 year, debtstart, debtfinal, debtreduce, startyearend, projyearend
-}
-\examples{
-projyearend = 97
-startyearend = 19
-noyears = projyearend-startyearend
-debtstart=0.057231
-debtreduce=0.00205
-debtfinal=0.049038
-years=1:noyears
-
-
 }
 \keyword{debt}
 \keyword{debt,}
