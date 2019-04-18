@@ -13,7 +13,7 @@ iab_fun(y, remlife, oavalue, assetclass)
 
 \item{oavalue}{opening asset value from assets.df}
 
-\item{assetclass}{asset class number}
+\item{assetclass}{id of asset class to be modelled}
 }
 \description{
 Formula for initial asset base for a single asset. All assets must be calculated by looping this function
@@ -25,17 +25,6 @@ Returns the iab for one asset class for all years.
 
 Prerequisites that need to be defined in ptrm model (i.e. run above code):
 remlife,oavalue,assetclass
-}
-\examples{
-
-projyearend = 97
-startyearend = 19
-noyears = projyearend-startyearend
-y = seq(1:noyears)
-assetclass = 1
-oavalue = 1812.17
-remlife = 30.70
-
 }
 \keyword{asset}
 \keyword{capex,}

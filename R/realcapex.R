@@ -1,10 +1,3 @@
-#real net capex ----
-#G10=real net capital expenditure =SUM(G11:G40) = real capex of all asset classes for each year
-#G11='PTRM input'!G143*(1+rvanilla01)^0.5 #vanilla goes up with the capex stage
-#G11=fcnetassets*(1+rvanilla01)^0.5 -  per asset class - so g11-g40 are all the 30 asset classes with this formula
-#fcnetcapex.df[assetclass,capexstage]*(1+rvanilla[capexstage])^0.5
-
-
 #' Real net capex function
 #'
 #' Formula for sum of real net capex in each year across all asset classes
@@ -17,29 +10,24 @@
 
 #' @param fcnetavg.full dataframe of all projected netcapex for dnsp (from netcapex_fun)
 #' @param yearslabel from 2020 to projected year end
-#' @param years number of all years from 1
+#' @param noyears count of number of projected years
 #' @param noassets count of asset classes
 #' @param rvanilla real vanilla WACC vector for all years
 #' @keywords netcapex, capex, dnsp, asset class, asset class type, vanilla WACC
 #' @export
-#' @examples
-#' projyearend = 97
-#' startyearend = 19
-#' years = seq(1:(projyearend-startyearend))
-#' noassets = 22
 #'
 
 
-realcapex_fun=function(years,noassets,fcnetavg.full,rvanilla,yearslabel){
-
-  assetclass=1:noassets
-  res <- matrix(NA, nrow=length(assetclass), ncol=length(years))
+realcapex_fun=function(noyears,noassets,fcnetavg.full,rvanilla,yearslabel){
+  years=1:noyears
+  res <- matrix(NA, nrow=noassets, ncol=length(years))
   res=as.data.frame(res)
   names(res)=yearslabel
 
   for (j in years) {
-    for(i in assetclass)
-      res[i,j]=(fcnetavg.full[i,j]*(1+rvanilla[,j])^0.5)
+    for(i in 1:noassets){
+      assetclass=i
+      res[i,j]=(fcnetavg.full[i,j]*(1+rvanilla[,j])^0.5)}
   }
 
   realcapex.df=res

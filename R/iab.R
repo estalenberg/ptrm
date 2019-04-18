@@ -12,23 +12,15 @@
 #' @param y vector of years from 1
 #' @param remlife remaining life of asset from assets.df
 #' @param oavalue opening asset value from assets.df
-#' @param assetclass asset class number
+#' @param assetclass id of asset class to be modelled
 #' @keywords year on year tracking, capex, iab, asset class, remlife, oavalue,
 #' @export
-#' @examples
 #'
-#' projyearend = 97
-#' startyearend = 19
-#' noyears = projyearend-startyearend
-#' y = seq(1:noyears)
-#' assetclass = 1
-#' oavalue = 1812.17
-#' remlife = 30.70
 #'
 iab_fun=function(y,remlife,oavalue,assetclass)
 {
   iabstart=ifelse(remlife>0,oavalue/remlife,0) #vector for each asset class - but get rid of infinite values
-    if(length(y)<2){y=iabstart[assetclass]}else{
+  if(length(y)<2){y=iabstart[assetclass]}else{
     for(i in 1:length(y))
       if(y[i]<2){y[i]=iabstart[assetclass]}else{
         if(is.na(remlife[assetclass])){y[i]=NA}else{ #use this to keep consistent with PTRM
@@ -41,6 +33,3 @@ iab_fun=function(y,remlife,oavalue,assetclass)
   }
   y
 }
-
-
-

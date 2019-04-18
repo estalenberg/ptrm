@@ -11,27 +11,20 @@
 #'
 #' @param y vector of years from 2019:projyearend, 2019 gets removed later
 #' @param capexstage corresponds to the year number or 'years'
-#' @param noassets count of asset classes
-#' @param oavalue opening asset value from assets.df
-#' @param rvanilla real vanilla WACC vector by years
-#' @param startyearend 2019 or 19
+#' @param assetclass single asset class to model
 #' @param stdlife standard life for the asset
+#' @param startyearend 2019 or 19
 #' @param fcnetavg.full dataframe of the forecasted netcapex determined above
+#' @param rvanilla real vanilla WACC vector by years
 #'
 #'
-#' @keywords year on year tracking, capex, asset class, stdlife, oavalue, real vanilla WACC
+#' @keywords year on year tracking, capex, asset class, stdlife, depreciation, real vanilla WACC
 #' @export
-#' @examples
-#' projyearend = 97
-#' startyearend = 19
-#' y = (startyearend:projyearend)
-#' stdlife = 22
 #'
 #'
 #capex in year calculations
-yoycapex_fun=function(y,capexstage,noassets,oavalue, rvanilla,startyearend,stdlife,fcnetavg.full)
+yoydeprec_fun=function(y,capexstage,assetclass, stdlife,startyearend,fcnetavg.full,rvanilla)
 {
-  assetclass=1:noassets
   if(length(y)<2){y[i]=0}else{
     for(i in 1:length(y))
       if(is.na(stdlife[assetclass])|((y[i]-startyearend)<(capexstage+1))){y[i]=NA}else{
@@ -42,6 +35,5 @@ yoycapex_fun=function(y,capexstage,noassets,oavalue, rvanilla,startyearend,stdli
   }
   y
 }
-
 
 

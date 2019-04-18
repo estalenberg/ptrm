@@ -1,6 +1,3 @@
-#call this the WARL approach - weighted average remaining life (real)
-#other is year on year tracking, for one asset at a time
-
 #' WARL formulas
 #'
 #' Weighted average remaining life method for real depreciation
@@ -17,14 +14,6 @@
 #' @param oavalue vector of opening asset value of assets from dnsp assets.df input dataframe
 #' @keywords warl, depreciation, capex, remlife, stdlife, vanilla WACC
 #' @export
-#' @examples
-#' projyearend = 97
-#' startyearend = 19
-#' noyears = projyearend-startyearend
-#' ac=1
-#' stdlife=46.30
-#' remlife=30.70
-#'
 
 warl_fun <- function(ac, yearslabel, fcnetavg.full, rvanilla, remlife, stdlife, oavalue,
                      noyears){
