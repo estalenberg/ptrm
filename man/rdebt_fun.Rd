@@ -4,27 +4,21 @@
 \alias{rdebt_fun}
 \title{Rate of debt function}
 \usage{
-rdebt_fun(y, debtstart, debtfinal, debtreduce, startyearend, projyearend)
+rdebt_fun(other.df, yearslabel, dynamicincdebt)
 }
 \arguments{
-\item{y}{year vector of 1:noyears}
+\item{other.df}{DNSP other.df dataframe}
 
-\item{debtstart}{defined above from dnsp other.df dataframe}
+\item{yearslabel}{label of projection years from 2020}
 
-\item{debtfinal}{defined above from dnsp other.df dataframe}
-
-\item{debtreduce}{defined above from dnsp other.df dataframe}
-
-\item{startyearend}{either 2019 or 2020 depending on dnsp}
-
-\item{projyearend}{dynamic input to define the end year of the modelling}
+\item{dynamicincdebt}{dynamic input of increase in trailing cost of debt}
 }
 \description{
 Trailing average portfolio return on debt for each year in model
 }
 \details{
 rate of debt changes with year starting from the first value (debt start) and reducing by debt reduce
-rate of debt is capped at the fifth year (2024) and then made into a dataframe with years as column headings.
+rate of debt is capped at the fifth year and then made into a dataframe with years as column headings.
 
 Prerequisites that need to be defined in ptrm model (i.e. run above code):
 year, debtstart, debtfinal, debtreduce, startyearend, projyearend

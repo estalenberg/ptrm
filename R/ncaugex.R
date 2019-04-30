@@ -38,7 +38,7 @@ ncaugex_fun <- function(yearslabel,fcnetavg,noyears,projyearend,noassets, augexr
       for(i in 1:length(ncyearslab))
         nc[assetclass,i]=avgaug[assetclass]
       for(i in 2:length(ncyearslab)){
-        nc[assetclass,i]=nc[assetclass,(i-1)]*(1+ncaddnew[i])}
+        nc[assetclass,i]=avgaug[assetclass]*(1+ncaddnew[i])}
     }
   }
   nc$code=assetcode

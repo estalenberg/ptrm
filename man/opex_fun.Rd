@@ -4,7 +4,7 @@
 \alias{opex_fun}
 \title{OPEX function}
 \usage{
-opex_fun(yearslabel, controlopex, productivity, opexfactor)
+opex_fun(yearslabel, controlopex, productivity, other.df)
 }
 \arguments{
 \item{yearslabel}{label of projection years from 2020}
@@ -13,7 +13,7 @@ opex_fun(yearslabel, controlopex, productivity, opexfactor)
 
 \item{productivity}{productivity percent, DNSP dynamic yearly vector}
 
-\item{opexfactor}{opex factor, DNSP static vector}
+\item{other.df}{dataset of DNSP static vectors}
 }
 \description{
 Formula for calculating the controllable OPEX for all projected years
