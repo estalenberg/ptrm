@@ -19,7 +19,7 @@ opex_fun=function(yearslabel, controlopex, productivity,other.df){
   opexrealcost = as.numeric(other.df$all.years[other.df$name=="opex real cost"])
   opexstepchange = as.numeric(other.df$all.years[other.df$name=="opex step change"])
 
-    tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=1)
+    tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
     tmp=as.data.frame(tmp)
     names(tmp)=yearslabel
     ox=tmp

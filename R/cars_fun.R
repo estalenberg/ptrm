@@ -13,7 +13,7 @@ cars_fun=function(yearslabel,other.df){
   cars1=other.df[which(other.df$name=="cars in 2018"),grep("^all.years$",colnames(other.df))]
   cargrowth=other.df[which(other.df$name=="car growth rate"),grep("^all.years$",colnames(other.df))]
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=1)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   cars=tmp

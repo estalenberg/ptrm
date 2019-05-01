@@ -21,7 +21,7 @@
 ncagg_fun <- function(noassets,yearslabel, productivity, fcnetcapex, ncreplace.df, ncskinny.df, ncaugex.df,
                       ncsyscap.df, ncnonnetwk.df){
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=noassets)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=noassets)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   assetclass=1:noassets

@@ -12,7 +12,7 @@ carpenet_fun=function(yearslabel,cars.in){
 
   cars60=cars.in/100 #decimal percent
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=1)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   carp=tmp

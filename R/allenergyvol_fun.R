@@ -3,14 +3,31 @@
 #' Formula for calculating the energy volume distribution among customers
 #'
 #'
-#' @param yearslabel label of projection years from 2020
+#' @param dnsp.in DNSP selected for function loop
 #' @param other.df database of static dnsp inputs
-#' @param electriccars number of electric vehicles
 #' @param cars.in dynamic variable for electric vehicle penetration by 2060 as a percent
-#'
+#' @param projyearend.in dynamic variable of final year
 #' @export
 #'
-allenergyvol_fun=function(yearslabel,other.df,electriccars,cars.in){
+allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in){
+  #cut to dnsp
+  d.name=c("Ausgrid","SAPN")
+  d.code=1:2
+  dnsp.df=cbind.data.frame(d.code,d.name)
+  dnsp=as.numeric(dnsp.df$d.code[dnsp.df$d.name==dnsp.in])
+  dnsp.label=as.character(dnsp.in)
+
+  other.df=other.df[other.df$dnsp==(as.numeric(dnsp)),]
+  other.df=subset(other.df,(!is.na(other.df$dnsp)))
+
+  #time line ----
+  projyearend = projyearend.in
+  startyearend=other.df$all.years[other.df$name=="year start"]
+  noyears=(projyearend-startyearend)
+  years=1:noyears
+  yearslabel=(startyearend:projyearend)
+  yearslabel=yearslabel[2:length(yearslabel)]
+
 
 # customer number functions
   custnum=cust_fun(yearslabel,other.df)
@@ -28,7 +45,7 @@ allenergyvol_fun=function(yearslabel,other.df,electriccars,cars.in){
 
 
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=1)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   energyvolexist=tmp

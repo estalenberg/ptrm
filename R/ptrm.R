@@ -184,7 +184,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   avg=fccapex6
 
   #make an empty df for all years and then put in the first 5 years
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=noassets)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=noassets)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   blank=tmp
@@ -595,32 +595,36 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   #Ereal=nettaxallowance/cif.df
 
   retdf=t(Areal)
-  retdf=cbind.data.frame(year,retdf,"Return on capital")
+  retdf=cbind.data.frame(year,retdf,"Return on capital (real)")
   names(retdf)=c("year","cost","type")
 
   depdf=t(Breal)
-  depdf=cbind.data.frame(year, depdf,"Regulatory depreciation")
+  depdf=cbind.data.frame(year, depdf,"Regulatory depreciation (real)")
   names(depdf)=c("year","cost","type")
 
   opdf=t(Creal)
-  opdf=cbind.data.frame(year,opdf,"Opex")
+  opdf=cbind.data.frame(year,opdf,"Opex (real)")
   names(opdf)=c("year","cost","type")
 
   revadf=t(Dreal)
-  revadf=cbind.data.frame(year,revadf,"Adjusted revenue")
+  revadf=cbind.data.frame(year,revadf,"Adjusted revenue (real)")
   names(revadf)=c("year","cost","type")
 
   taxdf=t(Ereal)
-  taxdf=cbind.data.frame(year,taxdf,"Tax")
+  taxdf=cbind.data.frame(year,taxdf,"Tax (real)")
   names(taxdf)=c("year","cost","type")
 
   anrevdf=t(annualrevenue.real)
-  anrevdf=cbind.data.frame(year, anrevdf,"Revenue.real")
+  anrevdf=cbind.data.frame(year, anrevdf,"Revenue (real)")
   names(anrevdf)=c("year","cost","type")
 
 
+  #real capex and RAB
+  realcapex=as.numeric(realcapexall)
+  realrab=as.numeric(rRABend[2:length(rRABend)])
+
   df.real=rbind.data.frame(retdf,depdf,opdf,revadf,taxdf,anrevdf)
-  df.real=cbind.data.frame(df.real,totalnetcapex)
+  df.real=cbind.data.frame(df.real,realcapex,realrab)
 
   df.real$dnsp=dnsp
   df.real$dnsp.label=as.character(dnsp.in)

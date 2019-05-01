@@ -22,7 +22,7 @@ rdebt_fun=function(other.df,yearslabel,dynamicincdebt)
                       other.df$'2'[other.df$name=="Trailing Average Portfolio Return on Debt"]),digits=5)
   debtfinal=other.df$'5'[other.df$name=="Trailing Average Portfolio Return on Debt"]
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=1)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   rd=tmp

@@ -17,7 +17,7 @@
 #'
 ncsyscap_fun <- function(noassets,yearslabel, fcnetavg, syscapratio,assetcode){
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=noassets)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=noassets)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   nc=tmp

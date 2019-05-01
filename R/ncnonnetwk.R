@@ -17,7 +17,7 @@
 #'
 ncnonnetwk_fun <- function(noassets,yearslabel, fcnetcapex, assetcode){
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=noassets)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=noassets)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   assetclass=1:noassets

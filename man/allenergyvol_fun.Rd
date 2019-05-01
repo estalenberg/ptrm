@@ -4,16 +4,16 @@
 \alias{allenergyvol_fun}
 \title{Energy volume functions}
 \usage{
-allenergyvol_fun(yearslabel, other.df, electriccars, cars.in)
+allenergyvol_fun(dnsp.in, other.df, cars.in, projyearend.in)
 }
 \arguments{
-\item{yearslabel}{label of projection years from 2020}
+\item{dnsp.in}{DNSP selected for function loop}
 
 \item{other.df}{database of static dnsp inputs}
 
-\item{electriccars}{number of electric vehicles}
-
 \item{cars.in}{dynamic variable for electric vehicle penetration by 2060 as a percent}
+
+\item{projyearend.in}{dynamic variable of final year}
 }
 \description{
 Formula for calculating the energy volume distribution among customers

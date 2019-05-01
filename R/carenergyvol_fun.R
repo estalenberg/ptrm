@@ -13,7 +13,7 @@ carenergyvol_fun=function(yearslabel,other.df,electriccars){
 
   electcarload=other.df[which(other.df$name=="load of electric car"),grep("^all.years$",colnames(other.df))]
 
-  tmp <- matrix(NA, ncol=length(yearslabel-1), nrow=1)
+  tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
   carv=tmp
