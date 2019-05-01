@@ -4,16 +4,18 @@
 \alias{price_fun}
 \title{Price per GWh and per customer}
 \usage{
-price_fun(yearslabel, df.real, energyvol.df, other.df)
+price_fun(dnsp.in, df.real, energyvol.df, other.df, projyearend.in)
 }
 \arguments{
-\item{yearslabel}{label of projection years from 2020}
+\item{dnsp.in}{DNSP selected for function loop}
 
 \item{df.real}{dataframe of real revenue calculated from ptrm_fun}
 
 \item{energyvol.df}{dataframe of relative energy volumes from allenergyvol_fun}
 
 \item{other.df}{dataframe of static dnsp inputs}
+
+\item{projyearend.in}{dynamic variable of final year}
 }
 \description{
 Formula for calculating the relative price for customers

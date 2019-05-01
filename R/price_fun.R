@@ -2,14 +2,32 @@
 #'
 #' Formula for calculating the relative price for customers
 #'
-#' @param yearslabel label of projection years from 2020
+#' @param dnsp.in DNSP selected for function loop
+#' @param projyearend.in dynamic variable of final year
 #' @param df.real dataframe of real revenue calculated from ptrm_fun
 #' @param energyvol.df dataframe of relative energy volumes from allenergyvol_fun
 #' @param other.df dataframe of static dnsp inputs
 #'
 #' @export
 #'
-price_fun=function(yearslabel,df.real,energyvol.df,other.df){
+price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in){
+  #cut to dnsp
+  d.name=c("Ausgrid","SAPN")
+  d.code=1:2
+  dnsp.df=cbind.data.frame(d.code,d.name)
+  dnsp=as.numeric(dnsp.df$d.code[dnsp.df$d.name==dnsp.in])
+  dnsp.label=as.character(dnsp.in)
+
+  other.df=other.df[other.df$dnsp==(as.numeric(dnsp)),]
+  other.df=subset(other.df,(!is.na(other.df$dnsp)))
+
+  #time line ----
+  projyearend = projyearend.in
+  startyearend=other.df$all.years[other.df$name=="year start"]
+  noyears=(projyearend-startyearend)
+  years=1:noyears
+  yearslabel=(startyearend:projyearend)
+  yearslabel=yearslabel[2:length(yearslabel)]
 
   #subset revenue.real
   rev.df=subset(df.real,df.real$type=="Revenue.real")
