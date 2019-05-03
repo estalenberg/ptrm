@@ -23,7 +23,7 @@ yoyall_fun <- function(noassets, yearslabel, years, noyears, remlife, oavalue,
                      startyearend,projyearend,stdlife,fcnetavg.full,rvanilla,iabcheck){
 
   assetclass=1:noassets
-  result <- matrix(NA, ncol=length(yearslabel-1), nrow=length(assetclass))
+  result <- matrix(NA, ncol=length(yearslabel), nrow=length(assetclass))
   result=as.data.frame(result)
   names(result)=yearslabel
 

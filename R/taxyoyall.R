@@ -25,7 +25,7 @@ taxyoyall_fun <- function(noassets, yearslabel, noyears, taxremlife, taxoavalue,
   #loop to calculate for each asset class
   assetclass=1:noassets
   taxiab.yrs=1:noyears
-  result <- matrix(NA, ncol=length(yearslabel-1), nrow=length(assetclass))
+  result <- matrix(NA, ncol=length(yearslabel), nrow=length(assetclass))
   result=as.data.frame(result)
   names(result)=yearslabel
 

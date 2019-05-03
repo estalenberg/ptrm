@@ -148,7 +148,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   fccust=(assets.df[col1:end1])
 
   #fccust contrib predictions----
-  result3 <- matrix(NA, ncol=length(yearslabel-1), nrow=length(assetclasslist))
+  result3 <- matrix(NA, ncol=length(yearslabel), nrow=length(assetclasslist))
   result3=as.data.frame(result3)
   names(result3)=yearslabel
   #make customer contributions equal to final year of inputs (i.e.2024)
@@ -387,7 +387,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   #take out name column of revadjust
   revadjustavg=revadjustavg[,2:length(revadjustavg)]
 
-  result <- matrix(NA, ncol=length(yearslabel-1), nrow=(nrow(revadjustavg)))
+  result <- matrix(NA, ncol=length(yearslabel), nrow=(nrow(revadjustavg)))
   result=as.data.frame(result)
   names(result)=yearslabel
   revadjustyears=(1:length(revadjustavg))
@@ -473,7 +473,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   taxdeprec= colSums (taxsumcapex, na.rm = T,dims=1)
 
   #placeholder adjustment----
-  result <- matrix(0, ncol=length(yearslabel-1), nrow=1)
+  result <- matrix(0, ncol=length(yearslabel), nrow=1)
   result=as.data.frame(result)
   names(result)=yearslabel
 
@@ -619,12 +619,14 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   names(anrevdf)=c("year","cost","type")
 
 
-  #real capex and RAB
+  #real capex, real RAB and real vanilla WACC
   realcapex=as.numeric(realcapexall)
   realrab=as.numeric(rRABend[2:length(rRABend)])
+  realratereturn=round((as.numeric(rvanilla))*100, digits=2) #%
+
 
   df.real=rbind.data.frame(retdf,depdf,opdf,revadf,taxdf,anrevdf)
-  df.real=cbind.data.frame(df.real,realcapex,realrab)
+  df.real=cbind.data.frame(df.real,realcapex,realrab,realratereturn)
 
   df.real$dnsp=dnsp
   df.real$dnsp.label=as.character(dnsp.in)
