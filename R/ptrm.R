@@ -65,7 +65,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
   #static inputs ----
   #inflation rate
-  infl=other.df$all.years[other.df$name=="Inflation Rate"] ##inflation is diferent for each dnsp, but needs to
+  infl=other.df$all.years[other.df$name=="Inflation Rate"]
 
   #corporate tax rate
   corptaxrate=other.df$all.years[other.df$name=="Expected Corporate Tax Rate"]
@@ -93,7 +93,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
   rdebt.df=rdebt_fun(other.df,yearslabel,dynamicincdebt)
 
-  #PTRM macros ----
+  #PTRM excel macros ----
   #asset remaining life
   #A1remlife = A1 = PTRM input! asset class 1, rem life = remaining life
   #so A1remlife is remlife[1]
@@ -151,10 +151,10 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   result3 <- matrix(NA, ncol=length(yearslabel), nrow=length(assetclasslist))
   result3=as.data.frame(result3)
   names(result3)=yearslabel
-  #make customer contributions equal to final year of inputs (i.e.2024)
-  fcyears=(1:length(fccust)) #how many years do we have - 5?
+  #make customer contributions equal to final year of inputs (i.e.y5)
+  fcyears=(1:length(fccust)) #how many years do we have
   result3[assetclasslist, fcyears]=fccust #make first 5 years equal to inputs
-  result3[,(length(fccust)+1):length(result3)]=fccust[length(fccust)] #make the rest equal to the final year (2024)
+  result3[,(length(fccust)+1):length(result3)]=fccust[length(fccust)] #make the rest equal to the final year (y5)
   fccust.full=result3
 
   #iab check -----
@@ -165,14 +165,14 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
 
   #netcapex predictions ----
-  repratio	= other.df$all.years[other.df$name=="Replacement ratio"]#69.97/100 #Replacement ratio
-  augexratio	 = other.df$all.years[other.df$name=="Augex ratio"]# 14.57/100 #Augex ratio
-  syscapratio	= other.df$all.years[other.df$name=="Systcap ratio"]# 15.46/100 #System capital overhead ratio
-  modrepcost = other.df$all.years[other.df$name=="Modern rep cost"]# 25900 #Modern day replacement cost
+  repratio	= other.df$all.years[other.df$name=="Replacement ratio"]#Replacement ratio
+  augexratio	 = other.df$all.years[other.df$name=="Augex ratio"]# Augex ratio
+  syscapratio	= other.df$all.years[other.df$name=="Systcap ratio"]# System capital overhead ratio
+  modrepcost = other.df$all.years[other.df$name=="Modern rep cost"]# Modern day replacement cost
 
-  startincline	= other.df$all.years[other.df$name=="Start incline"]#69.97/100 #Replacement ratio
-  ratedecline	 = other.df$all.years[other.df$name=="Rate decline"]# 14.57/100 #Augex ratio
-  decline2040	= other.df$all.years[other.df$name=="Decline after 2040"]# 15.46/100 #System capital overhead ratio
+  startincline	= other.df$all.years[other.df$name=="Start incline"]
+  ratedecline	 = other.df$all.years[other.df$name=="Rate decline"]
+  decline2040	= other.df$all.years[other.df$name=="Decline after 2040"]#
 
 
   fcnetavg=fcnetcapex #df of first 5 years in ptrm
@@ -259,11 +259,13 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
   realcapexall=realcapex_fun(noyears,noassets,fcnetavg.full,rvanilla,yearslabel)
 
+
   #real RAB (end period)----
   #rRAB= prevyearRAB - deprec + realcapex = real residual RAB (end period) = assets! row 466
 
   rRABend=rRABend_fun(noyears,RABstart,deprec,realcapexall,startyearend,projyearend)
   #end period +1 because it starts with 2018-19, assets! row 466
+
 
   #real residual RAB start period is the RAB from previous year
   rRABstart=as.numeric(c(0,rRABend[1:(length(rRABend)-1)])) #assets row 467
@@ -277,26 +279,26 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
   #cif ----
   cifyears=(1:(noyears+1)) #cumulative inflation index
-  cif.all=cif_fun(cifyears,infl, startyearend, projyearend) #includes 2019
+  cif.all=cif_fun(cifyears,infl, startyearend, projyearend) #includes y0
   cif.df=cif.all[2:length(cif.all)]
 
   RABnom=rRABend*cif.all #nominal residual RAB (end period) assets row 474
 
   #analysis row 17 is revenue building blocks RAB (start period) and is moved up one year
-  RABBBstart=as.numeric(c(0,RABnom[1:(length(RABnom)-1)])) #includin 2018-19
-  RABBBstart=RABBBstart[2:length(RABBBstart)] #starting at year ending 2020
+  RABBBstart=as.numeric(c(0,RABnom[1:(length(RABnom)-1)])) #including y0
+  RABBBstart=RABBBstart[2:length(RABBBstart)] #starting at year ending y1
   label=((startyearend+1):projyearend)
   df=as.data.frame(matrix(NA,ncol=length(label),nrow=1))
   names(df)=label
   df[1,]=RABBBstart
   RABBBstart=df
 
-  #nominal vanilla WACC return on capital - from year ending 2020 onwards
+  #nominal vanilla WACC return on capital - from year ending y1 onwards
   nomequityreturn = (RABBBstart*propeqfund) * rateequity #Analysis row 25
   nomdebtreturn = (RABBBstart*propdebtfund) * rdebt.df #analysis row 26
 
   #1. return on capital ----
-  #total return on capital = nominal vanilla WACC starts at 2020
+  #total return on capital = nominal vanilla WACC starts at y1
   returnoncapital = nomequityreturn+nomdebtreturn #analysis row 23, also final revenue summary component 1
 
 
@@ -308,8 +310,8 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
 
   #inflation on open RAB ----
-  #assets row 471 : G471=F474*G6: nominal RABend (RABnom) from previous year (including 2018-19) *2.5%
-  prevRABnom=as.numeric(c(0,RABnom[2:length(RABnom)-1])) #including zero for 2018-19
+  #assets row 471 : G471=F474*G6: nominal RABend (RABnom) from previous year (including y0) *2.5%
+  prevRABnom=as.numeric(c(0,RABnom[2:length(RABnom)-1])) #including zero for y0
   RABoinfl=prevRABnom*infl
   RABoinfl=RABoinfl[2:length(RABoinfl)]
   label=((startyearend+1):projyearend)
@@ -320,9 +322,9 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
 
   #2. nominal reg depreciation ----
-  #revenue summary return of capital (but only from 2020 onwards)
+  #revenue summary return of capital
   #nominal regulatory depreciation row 473 also analysis row 28 (return on)
-  nomREGdeprec=nomdeprec-RABoinfl #from 2020
+  nomREGdeprec=nomdeprec-RABoinfl #y1
 
 
   #inflated nominal residual RAB -----
@@ -331,7 +333,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
 
   #operating expenditure ----
-  #Analysis row 30='PTRM input'!G187*cif.df (starting at 2020)
+  #Analysis row 30='PTRM input'!G187*cif.df (starting at y1)
   #= (controllable opex + debt raising costs[1:length(controlopex)])*cif.df
 
   #controllable opex ----
@@ -394,7 +396,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   result[, revadjustyears]=revadjustavg
 
   #make all the other values the average
-  result[,(length(revadjustavg)+1):length(result)]=revadjustavg[length(revadjustavg)] #make the rest equal to the final year (2024)
+  result[,(length(revadjustavg)+1):length(result)]=revadjustavg[length(revadjustavg)] #make the rest equal to the final reg year (y5)
   revadjust.full=result
 
   revadjust=colSums (revadjust.full, na.rm = T,dims=1)
@@ -419,7 +421,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   #g26=nomdebtreturn #already calc above
 
   #g28=returncapitalregdeprec : return of capital (regulatory depreciation)
-  returncapitalregdeprec=nomREGdeprec[1:length(nomREGdeprec)] #assets 473 = RAB.df #from 2020 onwards
+  returncapitalregdeprec=nomREGdeprec[1:length(nomREGdeprec)] #assets 473 = RAB.df #from y1 onwards
   df=res
   df[1,]=returncapitalregdeprec
   returncapitalregdeprec=df
@@ -486,7 +488,7 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   taxdeprec=taxdeprec+place
 
   #interest ----
-  #analysis g48 and g26 =G10*G19 = interest = time varying return on debt *RABnom*0.6 (debt prop) - from 2020 onwards
+  #analysis g48 and g26 =G10*G19 = interest = time varying return on debt *RABnom*0.6 (debt prop) - from y1 onwards
   interest= nomdebtreturn #rdebt.df*RABBBstart*0.6
 
   #tax expense revenue adjustments----

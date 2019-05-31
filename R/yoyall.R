@@ -1,6 +1,6 @@
-#' WARL formulas
+#' YOY formulas
 #'
-#' Weighted average remaining life method for real depreciation
+#' Year on year method for real depreciation
 #'
 #' Function calculates only one asset class: ac, which is specified by user. The function has to be looped to project the WARL depreciation for all asset classes.
 #' Prerequisites that need to be defined in ptrm model, i.e. run above code: ac, yearslabel, fcnetavg.full, rvanilla, remlife, stdlife, oavalue, noyears

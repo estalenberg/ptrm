@@ -4,7 +4,8 @@
 \alias{price_fun}
 \title{Price per GWh and per customer}
 \usage{
-price_fun(dnsp.in, df.real, energyvol.df, other.df, projyearend.in)
+price_fun(dnsp.in, df.real, energyvol.df, other.df, projyearend.in,
+  cust.in)
 }
 \arguments{
 \item{dnsp.in}{DNSP selected for function loop}
@@ -16,6 +17,8 @@ price_fun(dnsp.in, df.real, energyvol.df, other.df, projyearend.in)
 \item{other.df}{dataframe of static dnsp inputs}
 
 \item{projyearend.in}{dynamic variable of final year}
+
+\item{cust.in}{dynamic variable of customer growth percentage}
 }
 \description{
 Formula for calculating the relative price for customers

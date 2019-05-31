@@ -7,10 +7,11 @@
 #' @param df.real dataframe of real revenue calculated from ptrm_fun
 #' @param energyvol.df dataframe of relative energy volumes from allenergyvol_fun
 #' @param other.df dataframe of static dnsp inputs
+#' @param cust.in dynamic variable of customer growth percentage
 #'
 #' @export
 #'
-price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in){
+price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in,cust.in){
   #cut to dnsp
   d.name=c("Ausgrid","SAPN")
   d.code=1:2
@@ -34,7 +35,7 @@ price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in){
   revenue.real=rev.df$cost*1000000
   revenue.real=revenue.real[2:length(revenue.real)]
 
-  custnum= cust_fun(yearslabel,other.df)
+  custnum= cust_fun(yearslabel,other.df,cust.in)
 
   rev_pcust=revenue.real/custnum
   energyvol=subset(energyvol.df,energyvol.df$names=="energyvoltot")

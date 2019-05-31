@@ -2,7 +2,7 @@
 % Please edit documentation in R/yoyall.R
 \name{yoyall_fun}
 \alias{yoyall_fun}
-\title{WARL formulas}
+\title{YOY formulas}
 \usage{
 yoyall_fun(noassets, yearslabel, years, noyears, remlife, oavalue,
   startyearend, projyearend, stdlife, fcnetavg.full, rvanilla, iabcheck)
@@ -33,7 +33,7 @@ yoyall_fun(noassets, yearslabel, years, noyears, remlife, oavalue,
 \item{iabcheck}{dataframe of raw iab values from ptrm for the first ten years}
 }
 \description{
-Weighted average remaining life method for real depreciation
+Year on year method for real depreciation
 }
 \details{
 Function calculates only one asset class: ac, which is specified by user. The function has to be looped to project the WARL depreciation for all asset classes.

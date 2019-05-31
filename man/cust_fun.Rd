@@ -4,12 +4,14 @@
 \alias{cust_fun}
 \title{Customer numbers function}
 \usage{
-cust_fun(yearslabel, other.df)
+cust_fun(yearslabel, other.df, cust.in)
 }
 \arguments{
 \item{yearslabel}{label of projection years from 2020}
 
 \item{other.df}{dataset of DNSP static vectors}
+
+\item{cust.in}{dynamic variable of customer growth percentage}
 }
 \description{
 Formula for calculating the number of customers in each dnsp

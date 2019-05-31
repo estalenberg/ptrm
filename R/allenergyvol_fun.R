@@ -7,9 +7,10 @@
 #' @param other.df database of static dnsp inputs
 #' @param cars.in dynamic variable for electric vehicle penetration by 2060 as a percent
 #' @param projyearend.in dynamic variable of final year
+#' @param cust.in dynamic variable of growth of customers percent
 #' @export
 #'
-allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in){
+allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in, cust.in){
   #cut to dnsp
   d.name=c("Ausgrid","SAPN")
   d.code=1:2
@@ -30,7 +31,7 @@ allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in){
 
 
 # customer number functions
-  custnum=cust_fun(yearslabel,other.df)
+  custnum=cust_fun(yearslabel,other.df,cust.in)
   newcust=newcust_fun(yearslabel,custnum)
 
   energyvol= other.df[which(other.df$name=="energy volumes"),grep("^1$",colnames(other.df)):grep("^5$",colnames(other.df))]

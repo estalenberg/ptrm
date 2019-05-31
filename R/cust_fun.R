@@ -5,13 +5,16 @@
 #'
 #' @param yearslabel label of projection years from 2020
 #' @param other.df dataset of DNSP static vectors
+#' @param cust.in dynamic variable of customer growth percentage
 #'
 #' @export
 #'
-cust_fun=function(yearslabel,other.df){
+cust_fun=function(yearslabel,other.df,cust.in){
 
   custnum= other.df[which(other.df$name=="cust numbers"),grep("^1$",colnames(other.df)):grep("^5$",colnames(other.df))] #just first 5 years 2020 to 2024
-  custgrowth= other.df[which(other.df$name=="cust growth rate"),grep("^all.years$",colnames(other.df))]
+  #custgrowth= other.df[which(other.df$name=="cust growth rate"),grep("^all.years$",colnames(other.df))]
+  custgrowth=cust.in/100
+
   #this may be a dynamic variable or one that changes over the year, but keep constant for now
 
     tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
