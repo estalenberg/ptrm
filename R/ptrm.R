@@ -6,7 +6,8 @@
 #'
 #' Prerequisites that need to be defined in ptrm model (i.e. run above code) are defined in arguments below.
 #'
-#' @param assets.df dataframe of all asssets for all dnsps
+#' @param assets.df dataframe of all assets for all dnsps
+#' @param iab.df dataframe of iab for dnsps with data
 #' @param other.df dataframe of all other inputs for all dnsps
 #' @param projyearend.in dynamic input of final projected year
 #' @param age.in dynamic input of asset age
@@ -21,7 +22,7 @@
 #' @export
 #'
 #'
-ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,addnew.in,
+ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim.in,addnew.in,
                    productivity.in,dnsp.in, method, dynamicincdebt.in){
 
   #create dataframe to link dnsp name with dnsp number
@@ -37,6 +38,10 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
 
   other.df=other.df[other.df$dnsp==(as.numeric(dnsp)),]
   other.df=subset(other.df,(!is.na(other.df$dnsp)))
+
+  #iab dataframe
+  iab.df=iab.df[iab.df$dnsp==(as.numeric(dnsp)),]
+  iab.df=subset(iab.df,(!is.na(iab.df$dnsp)))
 
   noassets=as.numeric(nrow(assets.df))
   assetclasslist=1:noassets
@@ -157,11 +162,25 @@ ptrm_fun= function(assets.df,other.df, projyearend.in, age.in, retireslim.in,add
   result3[,(length(fccust)+1):length(result3)]=fccust[length(fccust)] #make the rest equal to the final year (y5)
   fccust.full=result3
 
-  #iab check -----
-  #take out iab 1-10 as a new dataframe
-  col1=which(names(assets.df)=="iab1")
-  end1=which(names(assets.df)=="iab10")
-  iabcheck=(assets.df[col1:end1])
+  #iab SAPN and Energex -----
+  #take out iab for raw data
+  col1=which(names(iab.df)=="21")
+  iabend=as.numeric((names(iab.df[length(iab.df)])))
+  #cut to size of dataframe
+  if(iabend>=projyearend){
+  end1=which(names(iab.df)==projyearend)
+  iabcheck=(iab.df[col1:end1])
+  } else
+  {#make the rest =0
+    tmp <- matrix(0, ncol=length(yearslabel), nrow=noassets)
+    tmp=as.data.frame(tmp)
+    names(tmp)=yearslabel
+    iabcheck=tmp
+    col1=which(names(iab.df)=="21")
+    end1=length(iab.df)
+    iabcheck[1:end1]=(iab.df[col1:end1])
+  }
+
 
 
   #netcapex predictions ----

@@ -4,13 +4,16 @@
 \alias{ptrm_fun}
 \title{PTRM all model}
 \usage{
-ptrm_fun(assets.df, other.df, projyearend.in, age.in, retireslim.in,
-  addnew.in, productivity.in, dnsp.in, method, dynamicincdebt.in)
+ptrm_fun(assets.df, other.df, iab.df, projyearend.in, age.in,
+  retireslim.in, addnew.in, productivity.in, dnsp.in, method,
+  dynamicincdebt.in)
 }
 \arguments{
-\item{assets.df}{dataframe of all asssets for all dnsps}
+\item{assets.df}{dataframe of all assets for all dnsps}
 
 \item{other.df}{dataframe of all other inputs for all dnsps}
+
+\item{iab.df}{dataframe of iab for dnsps with data}
 
 \item{projyearend.in}{dynamic input of final projected year}
 

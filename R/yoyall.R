@@ -32,13 +32,9 @@ yoyall_fun <- function(noassets, yearslabel, years, noyears, remlife, oavalue,
 
   iab.all=result #dataframe of initial asset base value for all asset classes in each projection year
 
-  #row=5 #lvs - the sa ptrm counts down to at 5 years 17 and then stays at 17, but the remaining life is 20 years
-  #iab.all[row,1:10]
-  #iabcheck[row,1:10]
-
-  #substitute the first 10 predictions for the raw values in iabcheck
+  #substitute predictions for the raw values in iabcheck
   for (i in 1:noassets){
-    (iab.all[i,1:length(iabcheck[i,])]= iabcheck[i,])
+    (iab.all[i,1:length(iab.all[i,])]= iabcheck[i,])
   }
   #substite na for 0
   baseR.na   <- function(x) { x[is.na(x)] <- 0; x }
