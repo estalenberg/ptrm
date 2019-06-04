@@ -35,15 +35,17 @@ taxyoyall_fun <- function(noassets, yearslabel, noyears, taxremlife, taxoavalue,
 
   taxiab.all=result #initial asset base value for all asset classes in each projection year
 
-  #row=20
-  #taxiab.all[row,1:10]
-  #taxiabcheck[row,1:10]
-
-  #the tax declines rapidly using the ausgrid method but only slowly using the sa method - need to substitue the first 10 taxiabs again
-  #substitute the first 10 predictions for the raw values in iabcheck
-  for (i in 1:noassets){
-    (taxiab.all[i,1:length(taxiabcheck[i,])]= taxiabcheck[i,])
+  #the tax declines rapidly using the ausgrid method but only slowly using the sa method
+  # need to substitue the sa data in to the tax iab calc (prepared already in iab.df)
+  #but energex doesnt have any taxiab data
+  if(is.na(taxiabcheck[1,1])){
+    taxiab.all=result
+  } else {
+    for (i in 1:noassets){
+      (taxiab.all[i,1:length(taxiabcheck[i,])]= taxiabcheck[i,])
+    }
   }
+
   #substite na for 0
   baseR.na   <- function(x) { x[is.na(x)] <- 0; x }
   taxiab.all=baseR.na(taxiab.all)

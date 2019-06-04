@@ -9,9 +9,9 @@ ncsyscap_fun(noassets, yearslabel, fcnetavg, syscapratio, assetcode)
 \arguments{
 \item{noassets}{count of asset classes}
 
-\item{yearslabel}{label of years from 2020}
+\item{yearslabel}{label of years from y1}
 
-\item{fcnetavg}{blank dataframe of PTRM input net capex for 2020 to end with PTRM inputs}
+\item{fcnetavg}{blank dataframe of PTRM input net capex for y1 to end with PTRM inputs}
 
 \item{syscapratio}{system capital overhead ratio, DNSP static variable}
 

@@ -16,17 +16,18 @@
 #' @param productivity.in dynamic input of productivity
 #' @param dynamicincdebt.in dynamic input of increase in debt
 #' @param dnsp.in dynamic input of selected dnsp
-#' @param method dynamic input of method either yoy or warl
 #'
 #' @keywords ptrm, dynamic model, shiny, app
 #' @export
 #'
 #'
 ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim.in,addnew.in,
-                   productivity.in,dnsp.in, method, dynamicincdebt.in){
+                   productivity.in,dnsp.in, dynamicincdebt.in){
+
+  method=2 #this needs to outside the function if we want to change it see prev backups before June
 
   #create dataframe to link dnsp name with dnsp number
-  d.name=c("Ausgrid","SAPN")
+  d.name=c("Energex","SAPN")
   d.code=1:2
   dnsp.df=cbind.data.frame(d.code,d.name)
   dnsp=as.numeric(dnsp.df$d.code[dnsp.df$d.name==dnsp.in])
@@ -42,6 +43,10 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   #iab dataframe
   iab.df=iab.df[iab.df$dnsp==(as.numeric(dnsp)),]
   iab.df=subset(iab.df,(!is.na(iab.df$dnsp)))
+
+  #seperate into iab and taxiab
+  taxiab.df=subset(iab.df,iab.df$type=="tax")
+  iab.df=subset(iab.df,iab.df$type=="iab")
 
   noassets=as.numeric(nrow(assets.df))
   assetclasslist=1:noassets
@@ -167,19 +172,21 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   col1=which(names(iab.df)=="21")
   iabend=as.numeric((names(iab.df[length(iab.df)])))
   #cut to size of dataframe
-  if(iabend>=projyearend){
+
+  #bring back if statement if dnsp raw data is not available to 2060 (i.e projyearend)
+  #if(iabend>=projyearend){
   end1=which(names(iab.df)==projyearend)
   iabcheck=(iab.df[col1:end1])
-  } else
-  {#make the rest =0
-    tmp <- matrix(0, ncol=length(yearslabel), nrow=noassets)
-    tmp=as.data.frame(tmp)
-    names(tmp)=yearslabel
-    iabcheck=tmp
-    col1=which(names(iab.df)=="21")
-    end1=length(iab.df)
-    iabcheck[1:end1]=(iab.df[col1:end1])
-  }
+ # } else
+  #{#make the rest =0
+   # tmp <- matrix(0, ncol=length(yearslabel), nrow=noassets)
+  #  tmp=as.data.frame(tmp)
+  #  names(tmp)=yearslabel
+  #  iabcheck=tmp
+  #  col1=which(names(iab.df)=="21")
+  #  end1=length(iab.df)
+  #  iabcheck[1:end1]=(iab.df[col1:end1])
+  #}
 
 
 
@@ -190,17 +197,12 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   modrepcost = other.df$all.years[other.df$name=="Modern rep cost"]# Modern day replacement cost
 
   startincline	= other.df$all.years[other.df$name=="Start incline"]
+
   ratedecline	 = other.df$all.years[other.df$name=="Rate decline"]
-  decline2040	= other.df$all.years[other.df$name=="Decline after 2040"]#
+  decline2040	= other.df$all.years[other.df$name=="Decline after 2040"]# not used by Energex
 
 
   fcnetavg=fcnetcapex #df of first 5 years in ptrm
-  fccapex6=rowMeans(fcnetavg)
-
-  #if average is less than 0 make zero
-  fccapex6=ifelse(fccapex6<0,0,fccapex6)
-  fcnetavg$fccapex6=fccapex6
-  avg=fccapex6
 
   #make an empty df for all years and then put in the first 5 years
   tmp <- matrix(NA, ncol=length(yearslabel), nrow=noassets)
@@ -211,10 +213,17 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   tmp[, fcnetyears]=fcnetavg
   fcnetavg=tmp
 
-  #I. net capex replacement ----
+  #I. net capex replacement (repex) ----
+  if (dnsp.in=="Energex"){
+
+    ncreplace.df=ncreplaceqld_fun(yearslabel, fcnetavg,noyears,projyearend,noassets, assetcode, repratio,
+                     age, modrepcost,startincline,ratedecline)
+
+  }else{
+
   ncreplace.df=ncreplace_fun(yearslabel, fcnetavg,noyears,projyearend,noassets, assetcode, repratio,
                              age, modrepcost,startincline,ratedecline,decline2040)
-
+}
   #II net capex replace or slim
   ncskinny.df=ncskinny_fun(noassets,yearslabel, fcnetcapex, ncreplace.df, retireslim)
 
@@ -237,33 +246,15 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   totalnetcapex=as.data.frame(totalnetcapex)
 
   #WARL or YOY depreciation remlife formulas ----
+ #put the previous code back here if we want to bring warl back (PTRMFun_WARLorYOY_june0419.R in PTRM folder)
+#year on year tracking----
 
-  #warl using package
-  if(method==1){
-    #warl method
-    res_all <- NULL
-    for (i in 1:noassets){
-      ac=i
-      tmp=warl_fun(ac, yearslabel, fcnetavg.full, rvanilla, remlife, stdlife, oavalue,
-                   noyears)
-      res_all <- rbind(res_all, tmp)}
-
-    origcost_all=subset(res_all,res_all$value=="oc")
-    oav_all=subset(res_all,res_all$value=="oav")
-    remlife_all=subset(res_all,res_all$value=="rl")
-    regdeprec_all=subset(res_all,res_all$value=="rd")
-    regdeprec_all=regdeprec_all[,1:(length(regdeprec_all)-2)]
-    regdeprec_warl=regdeprec_all
-
-  }else{
-    #using year on year tracking
     sumcapex=yoyall_fun(noassets, yearslabel, years, noyears, remlife, oavalue,
                         startyearend,projyearend,stdlife,fcnetavg.full,rvanilla,iabcheck)
+
     regdeprec_yoy=sumcapex
 
     regdeprec_all=sumcapex
-
-  }
 
 
   #depreciation ----
@@ -382,12 +373,10 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
 
   #3. opex ----
   #x factor number 3
-
   opex=(controlopex.full + fcdebtraisecosts[1:length(controlopex.full)])*cif.df[,1:length(controlopex.full)]
 
   #4. Revenue adjustments ----
   #='PTRM input'!G205*cif.df #analysis row 32
-
   revadjust.df=subset(other.df,other.df$type=="revadjust")
 
   #revenue adjustments predictions ----
@@ -473,11 +462,26 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
 
   # row 46 is assets row 479 = sum of taxiab + tax depreciation in each year for each asset (like year on year tracking depreciation above)
 
-  #taxiab check -----
-  #take out iab 1-10 as a new dataframe
-  col1=which(names(assets.df)=="taxiab1")
-  end1=which(names(assets.df)=="taxiab10")
-  taxiabcheck=(assets.df[col1:end1])
+  #taxiab SAPN and Energex -----
+  #take out taxiab for raw data (if you have it)
+  #sapn dont have taxiab for all years, so we have put in the ptrm values for the first 10 years, then the sapn tax depreciation cal Depn|comparsion - tax values
+  #these are smaller than the values in the ptrm and zubi thinks they are expressed in 2015 terms, but are using them to avoid the taxiab from jumping up ar
+  col1=which(names(taxiab.df)=="21")
+  taxiabend=as.numeric((names(taxiab.df[length(taxiab.df)])))
+  #cut to size of dataframe
+  #if(taxiabend>=projyearend){
+    end1=which(names(taxiab.df)==projyearend)
+    taxiabcheck=(taxiab.df[col1:end1])
+    #} else
+  #{#make the rest =0
+   # tmp <- matrix(0, ncol=length(yearslabel), nrow=noassets)
+  #  tmp=as.data.frame(tmp)
+   # names(tmp)=yearslabel
+   # taxiabcheck=tmp
+  #  col1=which(names(taxiab.df)=="21")
+  #  end1=length(taxiab.df)
+  #  taxiabcheck[1:end1]=(taxiab.df[col1:end1])
+  #}
 
   #
   #tax iab ----
@@ -503,6 +507,9 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
 
   result[1:length(place)]=place
   place=result
+
+  baseR.na   <- function(x) { x[is.na(x)] <- 0; x }
+  place=baseR.na(place)
 
   taxdeprec=taxdeprec+place
 

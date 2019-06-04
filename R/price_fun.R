@@ -13,7 +13,7 @@
 #'
 price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in,cust.in){
   #cut to dnsp
-  d.name=c("Ausgrid","SAPN")
+  d.name=c("Energex","SAPN")
   d.code=1:2
   dnsp.df=cbind.data.frame(d.code,d.name)
   dnsp=as.numeric(dnsp.df$d.code[dnsp.df$d.name==dnsp.in])

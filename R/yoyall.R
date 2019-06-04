@@ -30,12 +30,14 @@ yoyall_fun <- function(noassets, yearslabel, years, noyears, remlife, oavalue,
   for(j in 1:length(assetclass)){
     result[j,]=iab_fun(years,remlife,oavalue,assetclass[j])}
 
-  iab.all=result #dataframe of initial asset base value for all asset classes in each projection year
+  iab.all=result #dataframe of calculated initial asset base value for all asset classes in each projection year
 
-  #substitute predictions for the raw values in iabcheck
+  #substitute predictions for the raw values in iabcheck - for SAPN and energex we have all iab already calculated, but the other dnsps will have to be the calculation
+  #this will need to be an if statement, maybe with an additional input variable
   for (i in 1:noassets){
     (iab.all[i,1:length(iab.all[i,])]= iabcheck[i,])
   }
+
   #substite na for 0
   baseR.na   <- function(x) { x[is.na(x)] <- 0; x }
   iab.all=baseR.na(iab.all)

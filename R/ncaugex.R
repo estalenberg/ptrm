@@ -23,6 +23,8 @@ ncaugex_fun <- function(yearslabel,fcnetavg,noyears,projyearend,noassets, augexr
   noncyears=6:noyears
   ncyearslab=startncyears:projyearend
   augexdf=fcnetavg*augexratio
+  augexdf[,6]=rowMeans(augexdf[1:5]) #taking the average of the ratios
+
   tmp=augexdf[,6:length(augexdf)]
   nc=tmp
 
@@ -31,16 +33,14 @@ ncaugex_fun <- function(yearslabel,fcnetavg,noyears,projyearend,noassets, augexr
   assetclass=1:noassets
   avgaug=as.numeric(augexdf[,6])
 
-
   for (j in 1:noassets) {
     assetclass=j
-    if(length(ncyearslab)<2){y=avgaug[assetclass]}else{
       for(i in 1:length(ncyearslab))
         nc[assetclass,i]=avgaug[assetclass]
       for(i in 2:length(ncyearslab)){
         nc[assetclass,i]=avgaug[assetclass]*(1+ncaddnew[i])}
-    }
   }
+
   nc$code=assetcode
   #attach to previous dataframe
   ncaugex.df=augexdf

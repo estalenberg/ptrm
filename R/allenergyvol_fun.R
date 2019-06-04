@@ -12,7 +12,7 @@
 #'
 allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in, cust.in){
   #cut to dnsp
-  d.name=c("Ausgrid","SAPN")
+  d.name=c("Energex","SAPN")
   d.code=1:2
   dnsp.df=cbind.data.frame(d.code,d.name)
   dnsp=as.numeric(dnsp.df$d.code[dnsp.df$d.name==dnsp.in])
@@ -35,6 +35,7 @@ allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in, cust.in){
   newcust=newcust_fun(yearslabel,custnum)
 
   energyvol= other.df[which(other.df$name=="energy volumes"),grep("^1$",colnames(other.df)):grep("^5$",colnames(other.df))]
+
   pcustgrowth=other.df[which(other.df$name=="energy p cust growth rate"),grep("^all.years$",colnames(other.df))]
 
   #electric vehicle functions

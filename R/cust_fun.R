@@ -15,8 +15,6 @@ cust_fun=function(yearslabel,other.df,cust.in){
   #custgrowth= other.df[which(other.df$name=="cust growth rate"),grep("^all.years$",colnames(other.df))]
   custgrowth=cust.in/100
 
-  #this may be a dynamic variable or one that changes over the year, but keep constant for now
-
     tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
     tmp=as.data.frame(tmp)
     names(tmp)=yearslabel

@@ -17,20 +17,18 @@
 #' @param modrepcost  modern day replacement cost, DNSP Static variable
 #' @param startincline  Start incline of net capex, DNSP Static variable
 #' @param ratedecline  Rate of decline, DNSP Static variable
-#' @param decline2040  Rate of decline after 2040, DNSP Static variable
 #'
 #' @export
 #'
 #'
-ncreplace_fun <- function(yearslabel, fcnetavg,noyears,projyearend,noassets, assetcode, repratio,
-                          age, modrepcost,startincline,ratedecline,decline2040){
+ncreplaceqld_fun <- function(yearslabel, fcnetavg,noyears,projyearend,noassets, assetcode, repratio,
+                          age, modrepcost,startincline,ratedecline){
 
   startncyears=yearslabel[6]
   noncyears=6:noyears
   ncyearslab=startncyears:projyearend
-  repdf=fcnetavg*repratio
-  repdf[,6]=rowMeans(repdf[1:5]) #taking the average of the ratios
-
+  repdf=fcnetavg*repratio #replacement ratio of system assets
+  repdf[,6]=rowMeans(repdf[1:5]) #might need to do this in original augex calc too
 
   tmp=repdf[,6:length(repdf)]
   nc=tmp
@@ -48,15 +46,15 @@ ncreplace_fun <- function(yearslabel, fcnetavg,noyears,projyearend,noassets, ass
   for (j in 1:noassets) {
     assetclass=j
       for(i in 1:length(ncyearslab))
-        nc[assetclass,i]=avgrep[assetclass]
+        nc[assetclass,i]=avgrep[assetclass] #make 6th year avg
       for(i in 2:length(ncyearslab)){
-        if(ncyearslab[i]<40){
-          nc[assetclass,i]=(nc[assetclass,(i-1)]*(startincline-((ncage[i]-50)*ratedecline)))}else{
-            if(ncyearslab[i]>60)
-            {nc[assetclass,i]=(1/ncage[i]*modrepcost*avgrep[assetclass]/sumcode1)}else{
-              nc[assetclass,i]=nc[assetclass,(i-1)]*(1-decline2040)}
-            }
-        }
+        if(ncyearslab[i]<70){
+          nc[assetclass,i]=nc[assetclass,(i-1)]*((startincline-((ncage[i]-50)*ratedecline)))
+          } #=L41*((L42-(L43*L44)))
+
+         else {
+          (1/ncage[i]*modrepcost*avgrep[assetclass]/sumcode1)}
+          }
       }
 
   nc$code=assetcode
@@ -72,6 +70,8 @@ ncreplace_fun <- function(yearslabel, fcnetavg,noyears,projyearend,noassets, ass
     for (j in 1:noassets)
       ifelse((nc[j,(grep("code", colnames(nc)))]==2),(nc[j,i]=0),(nc[j,i]=nc[j,i]))}
   ncreplace.df=nc
+
+#  write.csv(nc, "replaceenergex.csv")
 
 
   return(ncreplace.df)

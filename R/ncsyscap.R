@@ -6,8 +6,8 @@
 #'
 #' Prerequisites that need to be defined in ptrm model (i.e. run above code) are defined in arguments below.
 #'
-#' @param yearslabel label of years from 2020
-#' @param fcnetavg blank dataframe of PTRM input net capex for 2020 to end with PTRM inputs
+#' @param yearslabel label of years from y1
+#' @param fcnetavg blank dataframe of PTRM input net capex for y1 to end with PTRM inputs
 #' @param noassets count of asset classes
 #' @param syscapratio system capital overhead ratio, DNSP static variable
 #' @param assetcode if asset class is coded as 1 or 2
