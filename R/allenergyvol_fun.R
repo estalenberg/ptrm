@@ -8,9 +8,13 @@
 #' @param cars.in dynamic variable for electric vehicle penetration by 2060 as a percent
 #' @param projyearend.in dynamic variable of final year
 #' @param cust.in dynamic variable of growth of customers percent
+#' @param ogrid.in dynamic variable of offgrid customers by 2060 percent
+#' @param solar.in dynamic variable of percent of solar penetration by 2060
+#' @param batt.in dynamic variable of percent of battery penetration by 2060
+#' @param use.in dynamic variable of growth of energy use per customer
 #' @export
 #'
-allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in, cust.in){
+allenergyvol_fun=function(dnsp.in,other.df,projyearend.in,use.in, cust.in,cars.in,ogrid.in,solar.in,batt.in){
   #cut to dnsp
   d.name=c("Energex","SAPN")
   d.code=1:2
@@ -31,114 +35,68 @@ allenergyvol_fun=function(dnsp.in,other.df,cars.in,projyearend.in, cust.in){
 
 
 # customer number functions
+  #1
   custnum=cust_fun(yearslabel,other.df,cust.in)
-  newcust=newcust_fun(yearslabel,custnum)
+  #2
+  poffgrid=poffgrid_fun(other.df,yearslabel,ogrid.in)
+  #3
+  custongrid=custnum*(1-poffgrid)
+  #4
+  epcust2020=other.df$all.years[other.df$name=="energy p cust 2020"]
+  loadaft_offgrid=custongrid*epcust2020
+  #5
+  loadaft_eeffic=loadafteff_fun(yearslabel,other.df,use.in,loadaft_offgrid)
+  #6
+  psolar=psolar_fun(other.df,yearslabel,solar.in)
+  #7
+  rloadsolar=rloadsolar_fun(yearslabel,other.df,custongrid,psolar)
+  #8
+  loadaft_solar=loadaft_eeffic-rloadsolar
+  #9
+  pbatt=pbatt_fun(other.df,yearslabel,batt.in)
+  #10
+  rloadbatt=rloadbatt_fun(yearslabel,other.df,custongrid,pbatt)
+  #11
+  loadaft_batt=loadaft_solar-rloadbatt
+  #12
+  carnum=cars_fun(yearslabel,other.df)
+  #13
+  evpenetration=carpenet_fun(yearslabel,cars.in,other.df)
+  #14
+  numberev=carnum*evpenetration
+  #15
+  evload=other.df$all.years[other.df$name=="ev load"]
+  loadinc_ev=numberev*evload
+  #16 (11+15)
+  loadaft_ev=loadinc_ev+loadaft_batt
+  #17
+  energyvol=loadaft_ev
 
-  energyvol= other.df[which(other.df$name=="energy volumes"),grep("^1$",colnames(other.df)):grep("^5$",colnames(other.df))]
 
-  pcustgrowth=other.df[which(other.df$name=="energy p cust growth rate"),grep("^all.years$",colnames(other.df))]
-
-  #electric vehicle functions
-  cars=cars_fun(yearslabel,other.df) #total number of cars
-  carpenet=carpenet_fun(yearslabel,cars.in) #electric car penetration
-  electriccars=cars*carpenet #total number of electric cars
-  carenergyvol=carenergyvol_fun(yearslabel,other.df,electriccars) #absolute energy vol of electric cars
-  carevolchange=carevolchange_fun(yearslabel,carenergyvol) #change in energy volume of electric cars
-
-
-
+  #for price functions
   tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
   names(tmp)=yearslabel
-  energyvolexist=tmp
-  energyvolpcust=tmp
-  energyvolnewcust=tmp
-  energyvoltot=tmp
   energygrowthrate=tmp
   energypcustgrowthrate=tmp
 
-  #energy vol total
-  for(i in 1:5)
-    energyvoltot[i]=energyvol[i]
-
-  #energy vol exisiting customers
-  for(i in 1:5)
-    energyvolexist[i]=0
-  for(i in 6)
-    energyvolexist[i]=(energyvoltot[i-1]*(1+pcustgrowth))
-
-  #energy vol per customer
-  for(i in 1:5)
-    energyvolpcust[i]=0
-  for(i in 6)
-    energyvolpcust[i]=energyvolexist[i]/custnum[i-1]
-
-  #energy vol for new customers
-  for(i in 1:5)
-    energyvolnewcust[i]=0
-  for(i in 6)
-    energyvolnewcust[i]=newcust[i]*energyvolpcust[i]
-
-  #total energy volumes
-  for(i in 6)
-    energyvoltot[i]=energyvolexist[i]+energyvolnewcust[i]+carevolchange[i]
-
-  #loop through from 7:length
-  for (i in 7:length(tmp)){
-
-    energyvolexist[i]=(energyvoltot[i-1]*(1+pcustgrowth))
-
-    energyvolpcust[i]=energyvolexist[i]/custnum[i-1]
-
-    energyvolnewcust[i]=newcust[i]*energyvolpcust[i]
-
-    energyvoltot[i]=energyvolexist[i]+energyvolnewcust[i]+carevolchange[i]
-    }
-
   #energy growth rate
-  for(i in 1)
-    energygrowthrate[i]=0
+    energygrowthrate[1]=0
   for(i in 2:length(tmp))
-    energygrowthrate[i]= (energyvoltot[i]-energyvoltot[i-1])/energyvoltot[i-1]
+    energygrowthrate[i]= (energyvol[i]-energyvol[i-1])/energyvol[i-1]
 
-  #energy per customer
-  energypcust=energyvoltot/custnum
+  #energy per customer (on grid)
+  energypcust=energyvol/custongrid
 
   #energy per customer growth rate
-  for(i in 1)
-    energypcustgrowthrate[i]=0
+    energypcustgrowthrate[1]=0
   for(i in 2:length(tmp))
     energypcustgrowthrate[i]=(energypcust[i]-energypcust[i-1])/energypcust[i-1]
 
-data=rbind.data.frame(custnum,
-                      energyvoltot,
-                      energyvolexist,
-                      newcust,
-                      energyvolpcust,
-                      energyvolnewcust,
-                      carevolchange,
-                      energygrowthrate,
-                      energypcust,
-                      energypcustgrowthrate,
-                      cars,
-                      carpenet,electriccars,carenergyvol)
+  data=rbind.data.frame(custongrid,energyvol,energypcustgrowthrate)
+  names=c("Customers on grid", "Energy volumes", "energypcustgrowthrate")
+  data$names=names
 
-names=c("custnum",
-        "energyvoltot",
-        "energyvolexist",
-        "newcust",
-        "energyvolpcust",
-        "energyvolnewcust",
-        "carevolchange",
-        "energygrowthrate",
-        "energypcust",
-        "energypcustgrowthrate",
-        "cars",
-        "carpenet","electriccars","carenergyvol")
-
-data$names=names
-
-
-return(data)
+  return(data)
   }
 

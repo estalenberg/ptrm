@@ -5,7 +5,7 @@
 \title{PTRM all model}
 \usage{
 ptrm_fun(assets.df, other.df, iab.df, projyearend.in, age.in,
-  retireslim.in, addnew.in, productivity.in, dnsp.in, dynamicincdebt.in)
+  retireslim.in, addnew.in, productivity.in, dnsp.in, rba.in)
 }
 \arguments{
 \item{assets.df}{dataframe of all assets for all dnsps}
@@ -26,7 +26,7 @@ ptrm_fun(assets.df, other.df, iab.df, projyearend.in, age.in,
 
 \item{dnsp.in}{dynamic input of selected dnsp}
 
-\item{dynamicincdebt.in}{dynamic input of increase in debt}
+\item{rba.in}{dynamic input of rba cash rate}
 }
 \description{
 Complete model with only the real output

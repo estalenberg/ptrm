@@ -14,7 +14,7 @@
 #' @param retireslim.in dynamic input of retire or slim assets
 #' @param addnew.in dynamic input of adding new assets
 #' @param productivity.in dynamic input of productivity
-#' @param dynamicincdebt.in dynamic input of increase in debt
+#' @param rba.in dynamic input of rba cash rate
 #' @param dnsp.in dynamic input of selected dnsp
 #'
 #' @keywords ptrm, dynamic model, shiny, app
@@ -22,9 +22,10 @@
 #'
 #'
 ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim.in,addnew.in,
-                   productivity.in,dnsp.in, dynamicincdebt.in){
+                   productivity.in,dnsp.in, rba.in){
 
-  method=2 #this needs to outside the function if we want to change it see prev backups before June
+  #start----
+  #method=2 #this needs to outside the function if we want to change it see prev backups before June
 
   #create dataframe to link dnsp name with dnsp number
   d.name=c("Energex","SAPN")
@@ -67,7 +68,8 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   retireslim=rep(retireslim.in/100,noyears)
   addnew=rep(addnew.in/100,noyears)
   productivity=rep(productivity.in/100,noyears)
-  dynamicincdebt=dynamicincdebt.in/100
+  rba=rba.in/100
+
 
   #no scientific notation
   options(scipen=999999)
@@ -90,18 +92,17 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   #RABstart = opening RAB -
   RABstart=(oab+auc) #assets F474 real residual RAB at 2018-19
 
-  #rate equity input - does not vary with time
-  rateequity=other.df$all.years[other.df$name=="Return on Equity"]
+  #rate equity input - does not vary with time in ptrm
+  #rateequity=other.df$all.years[other.df$name=="Return on Equity"] #static value
+
+  #rate equity return varying by new formula:
+  requity.df=requity_fun(other.df,yearslabel,rba) #time vector
+  rateequity=requity.df
 
 
   #return on debt ----
   # trailing average portfolio return on debt function
-  debtstart=other.df$'1'[other.df$name=="Trailing Average Portfolio Return on Debt"]
-  debtreduce=round((other.df$'1'[other.df$name=="Trailing Average Portfolio Return on Debt"]-
-                      other.df$'2'[other.df$name=="Trailing Average Portfolio Return on Debt"]),digits=5)
-  debtfinal=other.df$'5'[other.df$name=="Trailing Average Portfolio Return on Debt"]
-
-  rdebt.df=rdebt_fun(other.df,yearslabel,dynamicincdebt)
+  rdebt.df=rdebt_fun(other.df,yearslabel,rba)
 
   #PTRM excel macros ----
   #asset remaining life

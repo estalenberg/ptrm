@@ -4,12 +4,14 @@
 \alias{carpenet_fun}
 \title{Car penetraion function}
 \usage{
-carpenet_fun(yearslabel, cars.in)
+carpenet_fun(yearslabel, cars.in, other.df)
 }
 \arguments{
 \item{yearslabel}{label of projection years from 2020}
 
 \item{cars.in}{dynamic input of electric car penetration by 2060}
+
+\item{other.df}{dataset of DNSP static vectors}
 }
 \description{
 Formula for calculating the penetration of electric vehicles over time

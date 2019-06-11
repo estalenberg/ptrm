@@ -35,10 +35,10 @@ price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in,cust.in)
   revenue.real=rev.df$cost*1000000
   revenue.real=revenue.real[2:length(revenue.real)]
 
-  custnum= cust_fun(yearslabel,other.df,cust.in)
+  custnum=cust_fun(yearslabel,other.df,cust.in)
 
   rev_pcust=revenue.real/custnum
-  energyvol=subset(energyvol.df,energyvol.df$names=="energyvoltot")
+  energyvol=subset(energyvol.df,energyvol.df$names=="Energy volumes")
   rev_pGWh=revenue.real/energyvol[1:(length(energyvol)-1)]
 
   energypcustgrowthrate=subset(energyvol.df,energyvol.df$names=="energypcustgrowthrate")
@@ -64,13 +64,11 @@ price_fun=function(dnsp.in,df.real,energyvol.df,other.df,projyearend.in,cust.in)
   bus_ckwh=tmp
   bus_ckwhtou=tmp
 
-  for(i in 1)
-    perchange_pcust[i]=0
+    perchange_pcust[1]=0
   for(i in 2:length(tmp))
     perchange_pcust[i]=((rev_pcust[i]-rev_pcust[i-1])/rev_pcust[i-1])*100
 
-  for(i in 1)
-    perchange_pGWh[i]=0
+    perchange_pGWh[1]=0
   for(i in 2:length(tmp))
     perchange_pGWh[i]=((rev_pGWh[i]-rev_pGWh[i-1])/rev_pGWh[i-1])*100
 

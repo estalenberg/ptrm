@@ -10,17 +10,18 @@
 
 #' @param other.df DNSP other.df dataframe
 #' @param yearslabel label of projection years from 2020
-#' @param dynamicincdebt dynamic input of increase in trailing cost of debt
-#' @keywords debt, rate, return on debt
+#' @param rba dynamic input of rba cash rate
+#' @keywords rba, debt, return on debt
 #' @export
 #'
 #'
-rdebt_fun=function(other.df,yearslabel,dynamicincdebt)
+rdebt_fun=function(other.df,yearslabel,rba)
 {
   debtstart=other.df$'1'[other.df$name=="Trailing Average Portfolio Return on Debt"]
   debtreduce=round((other.df$'1'[other.df$name=="Trailing Average Portfolio Return on Debt"]-
                       other.df$'2'[other.df$name=="Trailing Average Portfolio Return on Debt"]),digits=5)
   debtfinal=other.df$'5'[other.df$name=="Trailing Average Portfolio Return on Debt"]
+  todayrba=other.df$all.years[other.df$name=="rba today"]
 
   tmp <- matrix(NA, ncol=length(yearslabel), nrow=1)
   tmp=as.data.frame(tmp)
@@ -29,9 +30,9 @@ rdebt_fun=function(other.df,yearslabel,dynamicincdebt)
 
   rd[1]=debtstart
   for(i in 2:5)
-    rd[i]=((rd[i-1]-debtreduce)) #make each eyar decrease by debt reduct until year 5
+    rd[i]=((rd[i-1]-debtreduce)) #make each year decrease by debt reduct until year 5
   for (i in 6:length(rd))
-    rd[i]=rd[5]+dynamicincdebt
+    rd[i]=ifelse((yearslabel[i]<40),(rd[i-1]+((rba-todayrba)/15)),(rd[5]+(rba-todayrba)))
   rd
 
 }

@@ -4,14 +4,14 @@
 \alias{rdebt_fun}
 \title{Rate of debt function}
 \usage{
-rdebt_fun(other.df, yearslabel, dynamicincdebt)
+rdebt_fun(other.df, yearslabel, rba)
 }
 \arguments{
 \item{other.df}{DNSP other.df dataframe}
 
 \item{yearslabel}{label of projection years from 2020}
 
-\item{dynamicincdebt}{dynamic input of increase in trailing cost of debt}
+\item{rba}{dynamic input of rba cash rate}
 }
 \description{
 Trailing average portfolio return on debt for each year in model
@@ -26,5 +26,5 @@ year, debtstart, debtfinal, debtreduce, startyearend, projyearend
 \keyword{debt}
 \keyword{debt,}
 \keyword{on}
-\keyword{rate,}
+\keyword{rba,}
 \keyword{return}
