@@ -10,7 +10,12 @@
 #'
 pdfinalsignal_fun=function(yearslabel,pd_ev,signal.in){
 
-  a=1+3
+
+  sig.num=c(0,0.375,0.75)
+  sig.lab=c("none","mid-strength","strong")
+  sig.df=cbind.data.frame(sig.num,sig.lab)
+  signal=as.numeric(sig.df$sig.num[sig.df$sig.lab==signal.in])
+  signal.in=signal/100 #convert to percent
 
   #final dynamic price signal
   #grouped by hours
