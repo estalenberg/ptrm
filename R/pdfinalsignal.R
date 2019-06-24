@@ -10,6 +10,8 @@
 #'
 pdfinalsignal_fun=function(yearslabel,pd_ev,signal.in){
 
+  a=1+3
+
   #final dynamic price signal
   #grouped by hours
   #need an empty matrix for noyears*24
