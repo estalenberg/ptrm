@@ -3,7 +3,7 @@
 #' Formula for calculating the peak demand profile for on grid customers
 #'
 #' @param yearslabel label of projection years from 2020
-#' @param energyvol.df dataset of DNSP static vectors
+#' @param energyvol.df dataset calculated from energy volumes function
 #' @param pdprof.df dataset of DNSP static vectors
 #'
 #' @export

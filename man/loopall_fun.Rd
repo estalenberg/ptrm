@@ -4,9 +4,9 @@
 \alias{loopall_fun}
 \title{Energy volume functions}
 \usage{
-loopall_fun(assets.df, other.df, iab.df, projyearend.in, age.in,
-  retireslim.in, addnew.in, productivity.in, dnsp.in, rba.in, use.in,
-  cust.in, cars.in, ogrid.in, solar.in, batt.in)
+loopall_fun(assets.df, other.df, iab.df, priceprof.df, projyearend.in,
+  age.in, retireslim.in, addnew.in, productivity.in, dnsp.in, rba.in,
+  use.in, cust.in, cars.in, ogrid.in, solar.in, batt.in, signal.in)
 }
 \arguments{
 \item{assets.df}{database of static dnsp inputs for all assets}
@@ -14,6 +14,8 @@ loopall_fun(assets.df, other.df, iab.df, projyearend.in, age.in,
 \item{other.df}{database of static dnsp inputs}
 
 \item{iab.df}{database of static dnsp inputs for iab and tax iab}
+
+\item{priceprof.df}{dataframe of static dnsp price profile inputs}
 
 \item{projyearend.in}{dynamic variable of final year}
 
@@ -40,6 +42,8 @@ loopall_fun(assets.df, other.df, iab.df, projyearend.in, age.in,
 \item{solar.in}{dynamic variable of percent of solar penetration by 2060}
 
 \item{batt.in}{dynamic variable of percent of battery penetration by 2060}
+
+\item{signal.in}{dynamic variable of price signal text input}
 }
 \description{
 Formula for calculating the energy volume distribution among customers

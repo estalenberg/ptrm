@@ -93,8 +93,9 @@ allenergyvol_fun=function(dnsp.in,other.df,projyearend.in,use.in, cust.in,cars.i
   for(i in 2:length(tmp))
     energypcustgrowthrate[i]=(energypcust[i]-energypcust[i-1])/energypcust[i-1]
 
-  data=rbind.data.frame(custongrid,energyvol,energypcustgrowthrate,rloadsolar,rloadbatt,loadinc_ev)
-  names=c("Customers on grid", "Energy volumes", "energypcustgrowthrate","rloadsolar","rloadbatt","rloadev")
+  data=rbind.data.frame(custongrid,energyvol,energypcustgrowthrate,rloadsolar,rloadbatt,loadinc_ev,loadaft_offgrid,loadaft_eeffic,psolar)
+  names=c("Customers on grid", "Energy volumes", "energypcustgrowthrate","rloadsolar","rloadbatt",
+          "rloadev","loadaft_offgrid","loadaft_eeffic","psolar")
   data$names=names
 
   return(data)

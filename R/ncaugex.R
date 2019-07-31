@@ -7,55 +7,41 @@
 #' Prerequisites that need to be defined in ptrm model (i.e. run above code) are defined in arguments below.
 #'
 #' @param fcnetavg empty dataframe with first 5 years from DNSP and an avg
-#' @param noyears count of years
-#' @param yearslabel label pf projected years
-#' @param projyearend final projected year
 #' @param noassets count of asset classes
+#' @param growth.df dataframe of capex growth function
 #' @param augexratio augex ratio, DNSP static variable
-#' @param addnew add new asset as a percent of previous year, DNSP yearly vector
 #' @param assetcode if asset class is coded as 1 or 2
 #'
 #' @export
 #'
-ncaugex_fun <- function(yearslabel,fcnetavg,noyears,projyearend,noassets, augexratio, addnew, assetcode){
+ncaugex_fun <- function(fcnetavg,augexratio,growth.df,noassets,assetcode){
 
-  startncyears=yearslabel[6]
-  noncyears=6:noyears
-  ncyearslab=startncyears:projyearend
   augexdf=fcnetavg*augexratio
-  augexdf[,6]=rowMeans(augexdf[1:5]) #taking the average of the ratios
 
-  tmp=augexdf[,6:length(augexdf)]
-  nc=tmp
+  #year 6 onwards:
+  #=I3*(1+'Growth capex model'!H$13)
+  #growth capex model is an entire new function
+  #h13 = change final row in growth.df
 
-  ncaddnew=addnew[6:length(addnew)]
-
-  assetclass=1:noassets
-  avgaug=as.numeric(augexdf[,6])
-
-  for (j in 1:noassets) {
-    assetclass=j
-      for(i in 1:length(ncyearslab))
-        nc[assetclass,i]=avgaug[assetclass]
-      for(i in 2:length(ncyearslab)){
-        nc[assetclass,i]=avgaug[assetclass]*(1+ncaddnew[i])}
+  for(i in 6:length(augexdf)){
+    for (j in 1:noassets){
+    augexdf[j,i]=augexdf[j,(i-1)]*(1+growth.df[8,i])
+    }
   }
 
-  nc$code=assetcode
-  #attach to previous dataframe
-  ncaugex.df=augexdf
-  ncaugex.df$code=assetcode
-  ncaugex.df[,6:length(ncaugex.df)]=nc #
-  nc=ncaugex.df
+  #asset code
+  augexdf$code=assetcode
 
   #change all asset code 2 to 0
-  for (i in 1:(length(nc)-1)){
-    for (j in 1:noassets)
-      ifelse((nc[j,(grep("code", colnames(nc)))]==2),(nc[j,i]=0),(nc[j,i]=nc[j,i]))}
+  for (i in 1:(length(augexdf)-1)){
+    for (j in 1:noassets){
+      ifelse((augexdf[j,(grep("code", colnames(augexdf)))]==2),(augexdf[j,i]=0),(augexdf[j,i]=augexdf[j,i]))}
+  }
 
-  ncaugex.df=nc
+  augexdf=augexdf[1:(length(augexdf)-1)]
 
-  return(ncaugex.df)
+
+  return(augexdf)
 
     }
 

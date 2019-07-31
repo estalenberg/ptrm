@@ -4,23 +4,16 @@
 \alias{ncaugex_fun}
 \title{Netcapex functions: iii Augex}
 \usage{
-ncaugex_fun(yearslabel, fcnetavg, noyears, projyearend, noassets,
-  augexratio, addnew, assetcode)
+ncaugex_fun(fcnetavg, augexratio, growth.df, noassets, assetcode)
 }
 \arguments{
-\item{yearslabel}{label pf projected years}
-
 \item{fcnetavg}{empty dataframe with first 5 years from DNSP and an avg}
-
-\item{noyears}{count of years}
-
-\item{projyearend}{final projected year}
-
-\item{noassets}{count of asset classes}
 
 \item{augexratio}{augex ratio, DNSP static variable}
 
-\item{addnew}{add new asset as a percent of previous year, DNSP yearly vector}
+\item{growth.df}{dataframe of capex growth function}
+
+\item{noassets}{count of asset classes}
 
 \item{assetcode}{if asset class is coded as 1 or 2}
 }

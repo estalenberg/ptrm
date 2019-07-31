@@ -23,10 +23,10 @@ ncskinny_fun <- function(noassets,yearslabel, fcnetcapex, ncreplace.df, retiresl
   assetclass=1:noassets
 
   nc=tmp
-  for(i in 1:6)
-    nc[assetclass,i]=0
-  for(i in 7:length(nc))
-    nc[assetclass,i]=ncreplace.df[assetclass,i]*retireslim[i]
+  for(i in 1:6){
+    nc[assetclass,i]=0}
+  for(i in 7:length(nc)){
+    nc[assetclass,i]=ncreplace.df[assetclass,i]*retireslim[i]}
 
   return(nc)
 }

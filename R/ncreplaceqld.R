@@ -71,6 +71,8 @@ ncreplaceqld_fun <- function(yearslabel, fcnetavg,noyears,projyearend,noassets, 
       ifelse((nc[j,(grep("code", colnames(nc)))]==2),(nc[j,i]=0),(nc[j,i]=nc[j,i]))}
   ncreplace.df=nc
 
+
+  ncreplace.df=ncreplace.df[1:(length(ncreplace.df)-1)]
 #  write.csv(nc, "replaceenergex.csv")
 
 

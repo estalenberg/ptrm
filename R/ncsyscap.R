@@ -39,8 +39,12 @@ ncsyscap_fun <- function(noassets,yearslabel, fcnetavg, syscapratio,assetcode){
   nc$code=assetcode
 
   for (i in 6:(length(nc)-1)){
-    for (j in 1:noassets)
-      ifelse((nc[j,(grep("code", colnames(nc)))]==2),(nc[j,i]=0),(nc[j,i]=nc[j,i]))}
+    for (j in 1:noassets){
+      ifelse((nc[j,(grep("code", colnames(nc)))]==2),(nc[j,i]=0),(nc[j,i]=nc[j,i]))
+    }
+  }
+
+  nc=nc[1:(length(nc)-1)]
 
 
   return(nc)

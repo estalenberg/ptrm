@@ -69,9 +69,11 @@ ncreplace_fun <- function(yearslabel, fcnetavg,noyears,projyearend,noassets, ass
 
   #change all asset code 2 to zero
   for (i in 1:(length(nc)-1)){
-    for (j in 1:noassets)
+    for (j in 1:noassets){
       ifelse((nc[j,(grep("code", colnames(nc)))]==2),(nc[j,i]=0),(nc[j,i]=nc[j,i]))}
+  }
   ncreplace.df=nc
+  ncreplace.df=ncreplace.df[1:(length(ncreplace.df)-1)]
 
 
   return(ncreplace.df)

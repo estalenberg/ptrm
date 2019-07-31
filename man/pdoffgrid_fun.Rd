@@ -9,7 +9,7 @@ pdoffgrid_fun(yearslabel, energyvol.df, pdprof.df)
 \arguments{
 \item{yearslabel}{label of projection years from 2020}
 
-\item{energyvol.df}{dataset of DNSP static vectors}
+\item{energyvol.df}{dataset calculated from energy volumes function}
 
 \item{pdprof.df}{dataset of DNSP static vectors}
 }

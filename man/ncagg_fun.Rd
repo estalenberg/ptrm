@@ -4,7 +4,7 @@
 \alias{ncagg_fun}
 \title{Netcapex functions: vi Aggregate}
 \usage{
-ncagg_fun(noassets, yearslabel, productivity, fcnetcapex, ncreplace.df,
+ncagg_fun(noassets, yearslabel, productivity.in, fcnetcapex, ncreplace.df,
   ncskinny.df, ncaugex.df, ncsyscap.df, ncnonnetwk.df)
 }
 \arguments{
@@ -12,7 +12,7 @@ ncagg_fun(noassets, yearslabel, productivity, fcnetcapex, ncreplace.df,
 
 \item{yearslabel}{label of years from 2020}
 
-\item{productivity}{productivity DNSP yearly vector}
+\item{productivity.in}{dynamic variable of productivity}
 
 \item{fcnetcapex}{dataframe of PTRM input net capex for 2020-24}
 

@@ -8,11 +8,11 @@
 #'
 #' @param assets.df dataframe of all assets for all dnsps
 #' @param iab.df dataframe of iab for dnsps with data
+#' @param growth.df dataframe from growth model function
 #' @param other.df dataframe of all other inputs for all dnsps
 #' @param projyearend.in dynamic input of final projected year
 #' @param age.in dynamic input of asset age
 #' @param retireslim.in dynamic input of retire or slim assets
-#' @param addnew.in dynamic input of adding new assets
 #' @param productivity.in dynamic input of productivity
 #' @param rba.in dynamic input of rba cash rate
 #' @param dnsp.in dynamic input of selected dnsp
@@ -21,7 +21,7 @@
 #' @export
 #'
 #'
-ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim.in,addnew.in,
+ptrm_fun= function(assets.df,other.df, growth.df ,iab.df,projyearend.in, age.in, retireslim.in,
                    productivity.in,dnsp.in, rba.in){
 
   #start----
@@ -66,7 +66,6 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   #dynamic inputs----
   age=rep(age.in,noyears)
   retireslim=rep(retireslim.in/100,noyears)
-  addnew=rep(addnew.in/100,noyears)
   productivity=rep(productivity.in/100,noyears)
   rba=rba.in/100
 
@@ -229,7 +228,7 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   ncskinny.df=ncskinny_fun(noassets,yearslabel, fcnetcapex, ncreplace.df, retireslim)
 
   #III net capex augex
-  ncaugex.df=ncaugex_fun(yearslabel,fcnetavg,noyears,projyearend,noassets, augexratio, addnew, assetcode)
+  ncaugex.df=ncaugex_fun(fcnetavg,augexratio,growth.df,noassets,assetcode)
 
   #IV net capex sys cap overhead
   ncsyscap.df=ncsyscap_fun(noassets,yearslabel, fcnetavg, syscapratio,assetcode)
@@ -238,8 +237,8 @@ ptrm_fun= function(assets.df,other.df, iab.df,projyearend.in, age.in, retireslim
   ncnonnetwk.df=ncnonnetwk_fun(noassets,yearslabel, fcnetcapex, assetcode)
 
   #aggregate
-  netcapex.all=ncagg_fun(noassets,yearslabel, productivity, fcnetcapex, ncreplace.df, ncskinny.df, ncaugex.df,
-                         ncsyscap.df, ncnonnetwk.df)
+  netcapex.all=ncagg_fun(noassets,yearslabel, productivity.in, fcnetcapex, ncreplace.df, ncskinny.df, ncaugex.df,
+                                     ncsyscap.df, ncnonnetwk.df)
 
 
   fcnetavg.full=netcapex.all

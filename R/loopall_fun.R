@@ -7,6 +7,7 @@
 #' @param assets.df database of static dnsp inputs for all assets
 #' @param other.df database of static dnsp inputs
 #' @param iab.df database of static dnsp inputs for iab and tax iab
+#' @param priceprof.df dataframe of static dnsp price profile inputs
 #' @param projyearend.in dynamic variable of final year
 #' @param age.in dynamic variable of age of assets
 #' @param retireslim.in dynamic variable of slim assets
@@ -19,13 +20,16 @@
 #' @param solar.in dynamic variable of percent of solar penetration by 2060
 #' @param batt.in dynamic variable of percent of battery penetration by 2060
 #' @param use.in dynamic variable of growth of energy use per customer
+#' @param signal.in dynamic variable of price signal text input
 #' @export
 #'
-loopall_fun=function(assets.df,other.df, iab.df, projyearend.in, age.in, retireslim.in,addnew.in,
-                     productivity.in,dnsp.in, rba.in,use.in, cust.in,cars.in,ogrid.in,solar.in,batt.in){
+loopall_fun=function(assets.df,other.df, iab.df, priceprof.df,projyearend.in, age.in, retireslim.in,addnew.in,
+                     productivity.in,dnsp.in, rba.in,use.in, cust.in,cars.in,ogrid.in,solar.in,batt.in,
+                     signal.in){
 
 
-  #call function from package # no need to subset for
+  #call functions ptrm, energyvol and price (not demand) from package
+  #demand.in will be here
   df.real=ptrm_fun(assets.df,other.df, iab.df, projyearend.in, age.in, retireslim.in,addnew.in,
                    productivity.in,dnsp.in, rba.in)
 
@@ -35,10 +39,10 @@ loopall_fun=function(assets.df,other.df, iab.df, projyearend.in, age.in, retires
 
 
   #call price function
-  price.df=price_fun(dnsp.in,df.real,energyvol.df,other.df,projyearend.in, cust.in)
+  price.df=price_fun(dnsp.in,df.real,energyvol.df,other.df,priceprof.df,projyearend.in,cust.in,signal.in)
 
   #rev_pcust=subset(price.df,price.df$names=="rev_pcust")
-  rev_pGWh=subset(price.df,price.df$names=="rev_pGWh")
+  rev_pGWh=subset(price.df,price.df$names=="rev_pGWh") # which one?
 
 
   #mapping variable: #one number

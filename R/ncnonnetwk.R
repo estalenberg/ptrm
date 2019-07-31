@@ -24,18 +24,19 @@ ncnonnetwk_fun <- function(noassets,yearslabel, fcnetcapex, assetcode){
   nc=tmp
   avg=rowMeans(fcnetcapex)
 
-  for(i in 1:5)
-    nc[assetclass,i]=fcnetcapex[assetclass,i]
-  for(i in 6:length(nc))
-    nc[assetclass,i]=avg[assetclass]
+  for(i in 1:5){
+    nc[assetclass,i]=fcnetcapex[assetclass,i]}
+  for(i in 6:length(nc)){
+    nc[assetclass,i]=avg[assetclass]}
 
   nc$code=assetcode
 
   #change all asset code 1 to 0
   for (i in 1:(length(nc)-1)){
-    for (j in 1:noassets)
+    for (j in 1:noassets){
     ifelse((nc[j,(grep("code", colnames(nc)))]==1),(nc[j,i]=0),(nc[j,i]=nc[j,i]))}
-
+  }
+  nc=nc[1:(length(nc)-1)]
 
   return(nc)
 }
